@@ -90,4 +90,45 @@ Ye kaafi accha hain easy, maintainable code ke liye
 
 ham dusra rule bnhi daal sakte hain prettier ke liye in lint-staged
 
-"prettier --check" # taki ham verify kar paaye apne hisab se ki konsa chane karna chahiye
+"prettier --check" # taki ham verify kar paaye apne hisab se ki konsa chane karna chahiye ==> file app.ts delete karo aur push kardo chanegs
+---------------------------------------------------
+App configuration
+
+
+ham log ek file abana lete hai app.ts in src folder
+agar koi env varaible use karna hai toh ham kya kar sakte hain
+
+process.env.PORT ==> ham log env varaible ko ek centralised location pein layenge; fir wahase usko export karenge(mainatinability ke liye sahi hojayega)
+
+make a folder "config" under src ==> index.ts and dotenv file needed to be added
+
+dot env hame install karni padega
+config ==> index.ts
+
+npm i dotenv
+
+import { config } from 'dotenv'; # hame config part chahiye dotenv se
+
+config() =. ko call karenge
+
+const {PORT} = process.env; # hame destructre karna padega PORT variable ko; jisse hame process.env ka access PORT mein mil paaye
+
+export const CONFIG = {
+  PORT,
+}
+
+Ab isse export kaise karna hain
+
+app.ts
+
+import {CONFIG} from './config/index.ts'; 
+
+import { CONFIG } from './config/';
+CONFIG.PORT;
+
+Is tragh se ham inhe import kar sakte hain aur CONFIG.PORT is tarah se use bhi kar sakte hain
+
+so index.ts mein ham ek baar varaibles ko define karenge aur usko export kar ke bahar bh i use karenge. jisse hame jyada chance milega.
+
+
+
