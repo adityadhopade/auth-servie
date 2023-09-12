@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the api-auth server');
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
     res.status(err.statusCode).json({
