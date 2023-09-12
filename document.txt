@@ -32,8 +32,27 @@ eslint rules: https://eslint.org/docs/latest/rules/
 
 If there is a conflict between the files of eslint and prettier then we need to do is install eslint-config-prettier as dependency
 
-Husky: it is used to precommit.. iske andar kuch scripts likhenge.. so commit ke pehle kuch run karna
+Husky: It is used to automate the lint also it is used to precommit.. iske andar kuch scripts likhenge.. so commit ke pehle kuch run karna
 
+precommit- Jab bhi ham koi code commit karenge to uske pehle is husky ke andar kuch scripts likhenge; commit se pehle ye run karna
  npm install husky --save-dev
  npm install husky --save-dev => It creates the husky folder
  
+ npx husky install ==> to enable githooks 
+
+ But agar koi dev hamare repo ko clone karta hai to usme bhi husky automatically set hona chaiye
+
+ command for that is 
+
+ npm pkg set scripts.prepare="husky install"
+
+ iske baaad apko ye package.json meijn under scripts :
+ { "prepare" = "husky install" } added dikhega so developer ko ab manually exoplictly add karne ki koi jarurat nahi padegi
+
+To create a hook 
+
+npx husky add .husky/pre-commit "npm test" => Husky add aur konsi script hame addd karni hain in this case under test mein jo script hai wo script
+
+npx husky add .husky/pre-commit "npm run lint" =. hamare pass filhal test script nahi hai to by that time ham log lint ko add kar sakte hain
+
+
