@@ -130,5 +130,103 @@ Is tragh se ham inhe import kar sakte hain aur CONFIG.PORT is tarah se use bhi k
 
 so index.ts mein ham ek baar varaibles ko define karenge aur usko export kar ke bahar bh i use karenge. jisse hame jyada chance milega.
 
+------------------------------------------------
+
+Express JS setup
+
+npm i express (install express)
+
+make a file in config foldfer ==<> app.ts
+
+why app.ts not server.ts ?
+kyuki ham log express ka code yaha in app.ts run karenge fir is app ko srver.ts mein import karenge aur waha run karenge 
+
+import express from 'express';
+
+'/home/aditya/instructors/coders_gyan/pizza_project/auth-service/node_modules/express/index.js' implicitly has an 'any' type.
+
+so typescript mein express ke liye typescript type by default nahi mil raha so isse hame export karna padega
+
+npm i -D @types/express ==> resolves the error above
+
+const app = express();
+app.use();
+
+hame kuch middle wares bhi add karne padenge like JSON; kyuki API call kar rahe hain toh ofcourse JSON Data bhi ayega isme
 
 
+app.use(express.json());
+
+aur CORS bhi lagega [Cross Orgin Resource Sharing]
+
+import cors from 'cors' ==> install it using npm i cors
+app.use(cors()); # isko
+
+error isko declaration files nahi mil rahi hain
+npm i -D @types/cors (typescript resolution)
+
+in server.ts in the main folder we need to create this folder
+
+server.ts 
+import { CONFIG } from '@/config'; # import config ke andar ka port
+import app from './src/app'; # import app
+
+const PORT = CONFIG.PORT || 8000;
+
+const startServer = async (port: number) => {
+    try {
+        app.listen(port, () => {
+            console.log(`Listening on PORT ${port}`);
+        });
+    } catch (err: any) {
+        console.log(`Something went wrong`, err);
+    }
+};
+
+startServer(PORT as number);
+
+const startServer = async (port) ==> Throws wrror due to our typescript scrict rules as the parametrs should have a defined type so we added it as number
+
+startServer(PORT); => throws an error so we set it as the number
+
+startServer(PORT as number);
+
+hamne con solelof for now rakha hain but ham usko bhi chnage karenge
+
+server run karke dekhne ke liye 
+
+"dev": "nodemon server.ts" ==> In package.json we need to add the following like inside scripts
+
+"dev": "nodemon server.ts",
+
+app crashed ==> it dosent get the reference of @ so we get it as 
+
+import { CONFIG } from '@/config'; 
+
+chnage it as the followong like 
+
+import { CONFIG } from './src/config';
+
+---------------------------------------
+now create a .env file which contains the 
+
+PORT=5501 as setted
+
+nodemon mein server.ts kaise kaam karta hain ?
+agar hamare app mein ts-node ho toh nodemon ts-node ko hi use karta hain
+
+interanly "ts-node server.ts"
+
+------------
+
+abhi ek route leke try karte hain work kar raha hia ki nahi? 
+
+app.get('/',(req,res )=>{
+  res.send('Welocme to api auth service')
+})
+
+--------------
+
+but we cannot commit it as we have set the rukle for noconsole and in the server.ts we have commmit statement
+
+we shoukld either remove it or make it commented
