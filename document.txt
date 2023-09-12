@@ -230,3 +230,167 @@ app.get('/',(req,res )=>{
 but we cannot commit it as we have set the rukle for noconsole and in the server.ts we have commmit statement
 
 we shoukld either remove it or make it commented
+
+but it will still now works as we need to make a change in the server.ts file for the server.js file in the error block
+
+catch (err: any) ==. to  catch(err: unknown) for now we will chaneg it to something else later
+
+Now our code will work
+
+-=--------------------------------------------------
+
+Setting up the logger ==> to cechk the application logs, monitor errors and app, debug the application. It has various logs in iit; it is very important in the production application 
+
+we will use the winston as the logger package in npm
+
+install the package ==> npm install winston
+and install its types also in it ==> npm i -D @types/winston
+
+in src/config ==> create logger file (logger.ts)
+
+logger.ts ==> 
+
+import winston from 'winston';
+export const logger = winston.createLogger({
+    level: 'info', 
+});
+
+level: 'info' we need to make it dynamic with the help of env variables so taht we can debug when there in the production just by provideing it level as 'info'
+
+so add karo LOG_LEVEL in the index.ts aur usko export bhi karo
+
+aur isko add karo .env file ke andar
+
+LOG_LEVEL=info
+
+also make change in the logger.ts file
+
+format ==> log message ka format konse type ka hona chahiye; ye ek particular structure mein ho toh jo external systems hai like elasticsearch wo is system ko properly analyse kar paaye
+
+defaultMeta: har ek log mesage ke sath attach hoke jayega. 
+
+format option mein kaafi saare options hai.. ham json le sakte hain aur formats ko mix bhi kar sakte hain
+
+defaultMeta: { service: 'authservice' }, # pass karenge apne service ka naam jo hai authservice here
+
+transport: ye indicate karta hai apka storage location
+kaafi saare types ke ham storage use kar sakte hain files aur kaafi saare 3rd party services (elastic search, dynamodb etc)
+
+    transports: [
+        new winston.transports.Console({
+            format: winston.format.simple(),
+        }),
+    ],
+
+ isme ham transport use kar rahe hai of type console jo work karega same as that of terminal pein ham jaise log dekhte hain same waise hiiin
+
+
+   // format: winston.format.simple(),
+   but isse ham jyada kuch decipher nahi kar sakte; so hame yeh toh change karna padega
+
+  kyoki yaha timestamp aur baaki details nahi mil rahe hain to change karenge
+
+  winston.format.combine() ==> isme multiple method ko combine kar sakte hain
+
+  winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json(),
+  ),
+
+  Ab ye ek structured fomat mein hain aur isse ham log ek application ko bhej sakte hain like "elasticsearch" jo hamare logs ko log-levels se filter kar sakta hain
+
+If we make this change in the server.ts in the logger.info message like => logger.info(`Listening on PORT ${port}`, { serviceId: 1234 });
+
+Then we can see the serviceId is getting atdded in it ; it means that our custom fields(metadata) can get added into logger messages. 
+{"level":"info","message":"Listening on PORT 5501","service":"authservice","serviceId":1234,"timestamp":"2023-09-12T08:46:18.513Z"}
+
+now we will create the logger of type file to save our file application.log in the logs folder
+
+new windston.transports.File({
+  dirname: 'logs' # name of tghe folder
+  filename: 'application.log', #name of the file where the logs get stored
+  level: 'info' # name of the level
+  silent: false # we will save all our logs into file.
+})
+
+same ham log errors ke liye bhi kar sakte hain
+
+new windston.transports.File({
+  dirname: 'logs' # name of tghe folder
+  filename: 'error.log', #name of the file where the logs get stored
+  level: 'error' # name of the level
+  silent: false # we will save all our logs into file.
+})
+
+initially it will not throw the error as it do not have errors
+
+so we need tothrow error by ourselvers for that in server.ts
+
+
+const startServer = async (port: number) => {
+    try {
+        app.listen(port, () => {
+            logger.info(`Listening on PORT ${port}`, { serviceId: 1234 });
+            // console.log(`Listening on PORT ${port}`);
+        });
+        throw new Error('New Artificial Error here');
+    } catch (err: unknown) {
+        if (typeof err === 'object' && err !== null && 'message' in err) { # this checks if err type is object and err!= null also if message is present then only it will enter this loop
+            logger.error(`Soemthing went wrong error ${err.message}`); # as we need the message here
+        }
+        // console.log(`Something went wrong`, err);
+    }
+};
+
+
+-----------------------------
+
+What are levels in transport
+
+level: 'error': error level ke jitne bhi log hai wo hame error.log mein dikhne chahiye
+
+iske andar ek hirearchy hoti hain (0 to 6)
+
+{
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  verbose: 4,
+  debug: 5,
+  silly: 6
+}
+
+isme hota yeh hain ki suppose hamne level: 'info' set ki hai toh uske andar info ke aur uske upar ke i.e. error and warnings ke saare logs dikhenge.
+
+level:'error' isme saare error aur uske upar ke logs store honge(par uske updar kuch hai nahi actually so isme bs errors hi dikhenge)
+
+ye logger especially ueful hai hamare level:debug ki case mein isme hamare updar ke saare logs ayenge error, warn,info,http,verbose.
+
+It is expected to have more data to debug.
+We can passs our requests in debug also; but remeber do not pass any sensitive data in the debug logs.(Not a good practice)
+
+-----------------
+
+Hamne logger.ts mein already level set ki hai
+level: CONFIG.LOG_LEVEL so we can remove it from transport.
+
+Also here we can remove the silent: false as during the testing we do not need log
+
+so ham log index.ts mein ek change karte hain
+
+ek aur variable add karte hain by the name of ENVIRONMENT (isme dev, production, staging environemnet honge)
+
+silent: CONFIG.ENVIRONMENT === 'test',
+
+if env is test it will return true ; silent:true and it will not log any logs in the application.log file
+
+ham ise transport console mein bhi add kar sakte hain
+
+silent: CONFIG.ENVIRONMENT === 'production' || CONFIG.ENVIRONMENT === 'testing'
+
+like below
+
+        new winston.transports.Console({
+            silent: CONFIG.ENVIRONMENT === 'production'
+        }),
