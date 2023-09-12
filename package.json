@@ -1,0 +1,36 @@
+{
+  "name": "pizza_project",
+  "version": "1.0.0",
+  "description": "This is the pizza mern app",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier .",
+    "format:check": "npm run format -- --check",
+    "format:fix": "npm run format -- --write",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adityadhopade/mern-stack-auth-service.git"
+  },
+  "author": "Aditya Dhopade <adityadhopade18@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adityadhopade/mern-stack-auth-service/issues"
+  },
+  "homepage": "https://github.com/adityadhopade/mern-stack-auth-service#readme",
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.3",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

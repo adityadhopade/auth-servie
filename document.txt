@@ -1,0 +1,39 @@
+to install ts => npm install -D typescript @types/node ts-node nodemon
+
+to install tsconfig file ==> npx tsc --init 
+
+baseURl ==> all ts files in src folder
+    "paths": {
+      "@/*": ["*"] // used for aliases like ..* etc
+    }
+
+    outdir ==> goes to build folder and compiled stiff will be in it.
+
+    emitDecoratormetadata: used for type orm
+
+    strictproper ==> for best practices in ts
+
+    in the package.json do the following like 
+
+      "scripts": {
+    "format": "prettier .",
+    "format:check":"npm run format -- --check",
+    "format:fix": "npm run format -- --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  also add the .vscode folder in that create settings.json it will override global settings
+
+install eslint to get good code practices
+npm install -D @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint
+
+
+eslint rules: https://eslint.org/docs/latest/rules/
+
+If there is a conflict between the files of eslint and prettier then we need to do is install eslint-config-prettier as dependency
+
+Husky: it is used to precommit.. iske andar kuch scripts likhenge.. so commit ke pehle kuch run karna
+
+ npm install husky --save-dev
+ npm install husky --save-dev => It creates the husky folder
+ 
