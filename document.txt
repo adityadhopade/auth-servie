@@ -394,3 +394,40 @@ like below
         new winston.transports.Console({
             silent: CONFIG.ENVIRONMENT === 'production'
         }),
+
+Remove all the console.log statements
+----------------------------------------
+
+setting up the Error handling in Project in NodeJS application
+
+
+there is a great library "http-errors" for error handling
+
+npm i http-errors
+npm i -D @types/http-errors
+
+in app.ts usually ham log errors ke liye block hamesha routes ke niche likhte hai to collect all the errors
+
+usually express middleware mein 3 fields hoti hain request, response, next(nextFunction)
+
+But ham logo ko eror ke liye naya middle ware use karna hain jisme yeh saari fields ho + error field bhi ho like
+
+app.use((err: HttpError, req: Request, res: Response, next: nextFunction ))
+{
+
+}
+
+final error ke liye block kaisa rahega
+
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
+    logger.error(err.message);
+    res.status(err.statusCode).json({ // andar structured message bhejenge
+        name: err.name, # name of the eerror
+        statusCode: err.statusCode, # sattus code 
+        message: err.message, # mesage in the error
+        details: [], # further details in it like validation errors in some fields
+    });
+});
+
+res.status(err.statusCode) yeh helpfukl rahega hamare client applications ke liye like react front end app so we can detect what type of error it is 
+
