@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { HttpError } from 'http-errors';
 import { logger } from './config/logger';
@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the api-auth server');
 });
 
-app.use((err: HttpError, req: Request, res: Response) => {
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
     res.status(err.statusCode).json({
         name: err.name,

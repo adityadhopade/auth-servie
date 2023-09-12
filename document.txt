@@ -431,3 +431,10 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
 
 res.status(err.statusCode) yeh helpfukl rahega hamare client applications ke liye like react front end app so we can detect what type of error it is 
 
+make thius change if the next:NextFunction is givin gout warning
+    "lint-staged": {
+        "*.ts": [
+            "prettier --check",
+            "eslint --max-warnings=10"
+        ]
+    },
