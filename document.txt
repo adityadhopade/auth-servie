@@ -55,4 +55,30 @@ npx husky add .husky/pre-commit "npm test" => Husky add aur konsi script hame ad
 
 npx husky add .husky/pre-commit "npm run lint" =. hamare pass filhal test script nahi hai to by that time ham log lint ko add kar sakte hain
 
+par kya ye kaam kar raha hai ?
 
+ek config.ts file src me banao ==. usme apne eslint jisse violet ho aisa code likho
+
+eg. const user = 'Aditya';
+
+so ye warning to hame deta hai par code commit karne deta hain
+
+isse avoid karne ke liye ham logo ko ek naya package install karna padega "staged lint"
+
+"staged lint" => Hame allow hi nahi karega ki hum koi commit karpaye without resolving the eslint warnings and error.
+
+npm install --save-dev lint-staged # requires further setup
+
+add karo "lint-staged" underr root files as a object above devDependencies
+
+"lint-staged": {
+  "*.ts": [ 
+    "eslint --max-warnings=0"
+  ]
+},
+
+koi bhi ts file mein ek bhi warning ho toh apna commit fail ho jayega
+
+to ye chanegs pre-commit.sh mein bhi kar sakte hain
+
+"npm run lint" replace karo "npx lint-staged" isse hamara husky ye commad run karega aur inside lint-staged ==> "eslint --max-warnings=0" ye run hoga so ek bhi warning aai to code failed
