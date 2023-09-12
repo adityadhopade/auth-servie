@@ -24,6 +24,7 @@
     "homepage": "https://github.com/adityadhopade/mern-stack-auth-service#readme",
     "lint-staged": {
         "*.ts": [
+            "prettier --check",
             "eslint --max-warnings=0"
         ]
     },

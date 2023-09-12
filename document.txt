@@ -82,3 +82,12 @@ koi bhi ts file mein ek bhi warning ho toh apna commit fail ho jayega
 to ye chanegs pre-commit.sh mein bhi kar sakte hain
 
 "npm run lint" replace karo "npx lint-staged" isse hamara husky ye commad run karega aur inside lint-staged ==> "eslint --max-warnings=0" ye run hoga so ek bhi warning aai to code failed
+
+Abhi test karke dekhte hai.. run nahi hona chahitye [kuch changes karo app.ts file mein]
+
+Ye kaafi accha hain easy, maintainable code ke liye
+
+
+ham dusra rule bnhi daal sakte hain prettier ke liye in lint-staged
+
+"prettier --check" # taki ham verify kar paaye apne hisab se ki konsa chane karna chahiye
