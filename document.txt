@@ -438,3 +438,15 @@ make thius change if the next:NextFunction is givin gout warning
             "eslint --max-warnings=10"
         ]
     },
+
+Error handling mein agar hame async functions use karne hai aur agar usme error aaraha hai 
+
+async(req, res) => {
+
+}
+
+So add karo next as 3rd parameter and it will catch the error in the global error handler then
+
+async(req, res, next) => {
+
+}

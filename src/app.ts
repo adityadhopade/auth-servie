@@ -15,11 +15,16 @@ app.get('/', (req, res) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
-    res.status(err.statusCode).json({
-        name: err.name,
-        statusCode: err.statusCode,
-        message: err.message,
-        details: [],
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+        errors: [
+            {
+                type: err.name,
+                msg: err.message,
+                path: '',
+                location: '',
+            },
+        ],
     });
 });
 
