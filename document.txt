@@ -450,3 +450,17 @@ So add karo next as 3rd parameter and it will catch the error in the global erro
 async(req, res, next) => {
 
 }
+
+-------------------
+
+For setting up testing we will be using the Jest Framework in it(Most popular)
+
+We will be creating the unit testing and the end to end testing for the application
+
+npm install --save-dev jest // as a Development dependency
+
+in package.json add
+"test": "jest"
+
+we need to insitilaise the configuration file here as we are using typescript
+
